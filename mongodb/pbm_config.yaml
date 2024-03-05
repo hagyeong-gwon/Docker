@@ -1,0 +1,9 @@
+storage:
+  type: s3
+  s3:
+    region: ap-northeast-2
+    bucket: ${bucket name}
+    prefix: /test
+    credentials:
+      access-key-id: ${aws access key}
+      secret-access-key: ${aws secret access key}

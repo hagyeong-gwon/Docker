@@ -1,0 +1,43 @@
+services:
+  rs101:
+    image: percona/percona-server-mongodb:7.0.5-3-multi
+    container_name: percona7
+    hostname: percona7
+    ports:
+      - "27030:27017"
+    volumes:
+      - /data/percona7/db:/var/lib/mongo
+      - /data/percona7/log:/var/log/mongo
+      - /data/hub/mongod.key:/etc/mongod.key
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/root-username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/root-password
+    secrets:
+      - root-username
+      - root-password
+    networks:
+      - my-network
+    command: [
+      # Core Options
+      # '--auth', # --keyFile option implies --auth. https://www.mongodb.com/docs/manual/reference/program/mongod/#std-option-mongod.--keyFile
+      "--keyFile",
+      "/etc/mongod.key",
+      "--logpath",
+      "/var/log/mongo/mongod.log",
+      # Storage Options
+      "--dbpath",
+      "/var/lib/mongo",
+      # Replication Options
+      "--replSet",
+      "rs"
+    ]
+
+networks:
+  my-network:
+    driver: bridge
+secrets:
+  root-username:
+    file: /data/root-username
+  root-password:
+    file: /data/root-password

@@ -1,0 +1,8 @@
+services:
+  db-backup:
+    image: percona/percona-backup-mongodb:2.3.1-multi
+    container_name: db-backup
+    environment:
+      PBM_MONGODB_URL: "mongodb://pbmuser:secretpwd@${url}:27017"
+
+# $ docker run --name db-backup -e PBM_MONGODB_URI="mongodb://pbmuser:secretpwd@{url}:27017" -d percona/percona-backup-mongodb:2.3.1-multi
